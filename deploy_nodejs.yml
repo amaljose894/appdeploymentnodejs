@@ -1,0 +1,18 @@
+---
+- name: "Playbook to Add Key to Newly Provisioned EC2 Instance"
+  hosts: all
+  vars:
+    my_version: "{{ TAG }}"
+  tasks:
+        - name: "ansible command module with_items "
+          command: sudo docker stop nodejs_server
+          ignore_errors: yes
+        - name: "ansible command module with_items "
+          command: sudo docker rm nodejs_server -f
+          ignore_errors: yes
+        - name: "login to Docker Repo" 
+          command:  sudo docker login -u="amaljose" -p="jVbExP0/l2geeWxzbTqiAsbxqwd9UM00r20DAj83newLLuXrZmxWDmrVYuYfAQ3n" quay.io
+          ignore_errors: yes         
+        - name: "starting container"
+          command: sudo docker run -itd --name nodejs_server  -p 8081:8081 quay.io/amaljose/nodejs:{{TAG}}
+          ignore_errors: yes
